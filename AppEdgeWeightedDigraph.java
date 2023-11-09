@@ -1,4 +1,4 @@
-public class AppEdgeWeightedGraph
+public class AppEdgeWeightedDigraph
 {
   public static void main(String[] args) {
     /* 
@@ -7,7 +7,7 @@ public class AppEdgeWeightedGraph
     g.addEdge("0", "2");
     g.addEdge("2", "1");
     */
-    EdgeWeightedGraph g = new EdgeWeightedGraph("teste.txt");
+    EdgeWeightedDigraph g = new EdgeWeightedDigraph("teste.txt");
 
     for (String v : g.getVerts()) {
       System.out.print(v + ": ");
@@ -19,5 +19,7 @@ public class AppEdgeWeightedGraph
     System.out.println();
     System.out.println(g.toDot());
     g.dfs1(g);
+    System.out.println("O valor é: " + g.valortotal());
+    //para cada vertice e cada adjacente de deve ser chamado o metodo dfs para assim ir multiplicando e depois somar
   }
 }

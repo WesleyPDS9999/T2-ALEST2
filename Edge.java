@@ -15,6 +15,7 @@ public class Edge implements Comparable<Edge>
   public String getW() { return w; }
 
   public double getWeight() { return weight; }
+  //public Edge getEdge(){ return Edge;}
 
   @Override
   public int compareTo(Edge other) {
