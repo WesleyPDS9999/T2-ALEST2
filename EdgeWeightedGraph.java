@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,11 +12,13 @@ public class EdgeWeightedGraph {
   protected Map<String, List<Edge>> graph;
   private Set<String> marked;
   private Map<String, String> edgeTo;
+  private ArrayList<Double> resultados;
 
   public EdgeWeightedGraph() {
     graph = new HashMap<>();
     marked = new HashSet<>();
     edgeTo = new HashMap<>();
+    resultados = new ArrayList<>();
   }
 
   public EdgeWeightedGraph(String filename) {//algoritmo precisa ser por profundidade, pode ir calculando de 1 elemento por vez
@@ -39,28 +42,43 @@ public class EdgeWeightedGraph {
   
 
   public void dfs1(EdgeWeightedGraph g){
-    for(String v : g.getVerts()){
-        if(!marked.contains(v)){
+    
+        if(!marked.contains("hidrogenio")){
             //getEdge(Edge[i]);
-            dfs(g,v,1);
+            dfs(g,"hidrogenio",1);
         }
-    }
+    
 }
 
-  private double dfs(EdgeWeightedGraph g, String v, double d) {
-    marked.add(v);
-    for (String w : getVerts().stream().toList()) {
-      for (Edge e: getAdj(v)) {
+//i = 1 ; i <= getC()-1;i++
+//if i== getc-1
+
+  private void dfs(EdgeWeightedGraph g, String v, double d) {
+    if(g.getAdj2("hidrogrenio")){
+      marked.add(v);
+    }
+    for (Edge e : g.getAdj(v)) {
+      String w = e.getW();
         if (!marked.contains(w)) {
             edgeTo.put(w, v);
             d = d * e.getWeight();
-            dfs(g, w,d);
+            System.out.println(d);
+            System.out.println(w);
+            System.out.println();
+            dfs(g, w, d);
         }
-      }
     }
-    System.out.println(d);
-    return d;
-}
+    resultados.add(d);
+    d = 1;
+  }
+
+  public double valortotal(){
+    double v = 0;
+    for(int i = 0; i < resultados.size();i++){
+      v += resultados.get(i);
+    }
+    return v;
+  }
 
   public Edge addEdge(String v, String w, double weight) {
     Edge e = new Edge(v, w, weight);
@@ -69,8 +87,12 @@ public class EdgeWeightedGraph {
     return e;
   }
 
-  public Iterable<Edge> getAdj(String v) {
+  public List<Edge> getAdj(String v) {
     return graph.get(v);
+  }
+
+  public boolean getAdj2(String v) {
+    return graph.containsKey(v);
   }
 
   public Set<String> getVerts() {
@@ -82,10 +104,6 @@ public class EdgeWeightedGraph {
     return e.getWeight();
   }
 
-  public int getV(String v){
-    List<Edge> list = graph.get(v);
-    return 1;
-  }
 
   public String toDot() {
     // Usa um conjunto de arestas para evitar duplicatas
