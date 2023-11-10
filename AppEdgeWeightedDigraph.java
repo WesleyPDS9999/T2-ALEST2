@@ -7,7 +7,7 @@ public class AppEdgeWeightedDigraph
     g.addEdge("0", "2");
     g.addEdge("2", "1");
     */
-    EdgeWeightedDigraph g = new EdgeWeightedDigraph("teste.txt");
+    EdgeWeightedDigraph g = new EdgeWeightedDigraph("casoa320.txt");
 
     for (String v : g.getVerts()) {
       System.out.print(v + ": ");
@@ -19,7 +19,7 @@ public class AppEdgeWeightedDigraph
     System.out.println();
     System.out.println(g.toDot());
     g.dfs1(g);
-    System.out.println("O valor é: " + g.valortotal());
-    //para cada vertice e cada adjacente de deve ser chamado o metodo dfs para assim ir multiplicando e depois somar
+    System.out.println("O valor é: " + g.valortotal("ouro"));
+    //System.out.println(g.tabela()); //valor de hidrogenios necessarios para cada elemento
   }
 }

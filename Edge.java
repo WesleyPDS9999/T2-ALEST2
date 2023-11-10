@@ -2,9 +2,9 @@ public class Edge implements Comparable<Edge>
 {
   private String v;
   private String w;
-  private double weight;
+  private int weight;
 
-  public Edge(String v, String w, double weight) {
+  public Edge(String v, String w, int weight) {
     this.v = v;
     this.w = w;
     this.weight = weight;
@@ -14,7 +14,7 @@ public class Edge implements Comparable<Edge>
 
   public String getW() { return w; }
 
-  public double getWeight() { return weight; }
+  public int getWeight() { return weight; }
   //public Edge getEdge(){ return Edge;}
 
   @Override

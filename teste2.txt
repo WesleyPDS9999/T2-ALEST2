@@ -1,0 +1,5 @@
+3 hidrogenio -> 1 cadmio
+5 cadmio -> 1 paladio
+4 cadmio -> 1 netunio
+8 netunio 9 paladio -> 1 zinco
+6 zinco -> 1 ouro 

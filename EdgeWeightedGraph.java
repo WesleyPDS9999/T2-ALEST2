@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,9 +10,9 @@ public class EdgeWeightedGraph {
   protected static final String NEWLINE = System.getProperty("line.separator");
 
   protected Map<String, List<Edge>> graph;
-  private Set<String> marked;
+  private Set<String> marked;//pode ser utilizado na otmização
   protected Set<String> vertices;
-  private ArrayList<Double> resultados;
+  private Map<String, BigInteger> resultados;
   protected int totalVertices;
   protected int totalEdges;
 
@@ -20,24 +20,23 @@ public class EdgeWeightedGraph {
     graph = new HashMap<>();
     vertices = new HashSet<>();
     marked = new HashSet<>();
-    resultados = new ArrayList<>();
+    resultados = new HashMap<>();
     totalVertices = totalEdges = 0;
   }
 
-  public EdgeWeightedGraph(String filename) {//algoritmo precisa ser por profundidade, pode ir calculando de 1 elemento por vez
+  public EdgeWeightedGraph(String filename) {
     this();
     In in = new In(filename);
     String line;
     while((line = in.readLine()) != null) {
       String[] edge = line.split(" ");
       for(int i = 1; i < edge.length-2;i=i+2){
-        addEdge(edge[i], edge[edge.length-1], Double.parseDouble(edge[i-1]));
-        //valor += getEdge(addEdge(edge[i], edge[edge.length-1], Double.parseDouble(edge[i-1])));
+        addEdge(edge[i], edge[edge.length-1], Integer.parseInt(edge[i-1]));
       }
     }
   }
 
-  public void addEdge(String v, String w, double weight) {
+  public void addEdge(String v, String w, int weight) {
     Edge e = new Edge(v, w, weight);
     addToList(v, e);
     addToList(w, e);
@@ -53,44 +52,36 @@ public class EdgeWeightedGraph {
   }
 
   public void dfs1(EdgeWeightedGraph g){
-
-    if(!marked.contains("hidrogenio")){
-        //getEdge(Edge[i]);
-        dfs(g,"hidrogenio",1);
-    }
-
-}
-
-//i = 1 ; i <= getC()-1;i++
-//if i== getc-1
-
-private void dfs(EdgeWeightedGraph g, String v, double d) {
-  if(((List<Edge>) g.getAdj("hidrogenio")).contains(v)){
-    marked.add(v);
+    String v = "hidrogenio";
+    resultados.put(v, BigInteger.valueOf(1));
+    dfs(g,v,BigInteger.valueOf(1));
   }
-for (Edge e : g.getAdj(v)) {
-  String w = e.getW();
-    if (!marked.contains(w)) {
-        d = d * e.getWeight();
-        System.out.println(d);
-        System.out.println(w);
-        System.out.println();
-        dfs(g, w, d);
-        if(w.equals("ouro")){
-        resultados.add(d);
-        }
-        d = 1;
-    }
-}
-}
 
-public double valortotal(){
-  double v = 0;
-  for(int i = 0; i < resultados.size();i++){
-    v += resultados.get(i);
+  private void dfs(EdgeWeightedGraph g, String v, BigInteger d) {
+  for (Edge e : g.getAdj(v)) {
+    String w = e.getW();
+    String pai = e.getV();    
+    d = d.multiply(BigInteger.valueOf(e.getWeight()));
+    System.out.println(d);
+    System.out.println(w);
+    System.out.println();
+    if(resultados.containsKey(w)){// se ja apresenta um valor associado com tal elemento
+      BigInteger novoValor = resultados.get(w).add(d);//soma com o valor que ja esta mapeado com o elemento
+      resultados.put(w,novoValor);//add no map com novo valor
+    }else{
+      resultados.put(w,d);
+    }
+    dfs(g, w, d); 
+    d = resultados.get(pai);
+    }
   }
-  return v;
-}
+
+  public Map tabela(){
+    return resultados;
+  }
+  public BigInteger valortotal(String elemento){
+    return resultados.get(elemento);
+  }
 
   public Iterable<Edge> getAdj(String v) {
     List<Edge> res = graph.get(v);
@@ -124,7 +115,7 @@ public double valortotal(){
     sb.append("rankdir = LR;" + NEWLINE);
     sb.append("node [shape = circle];" + NEWLINE);
     for (Edge e : getEdges())
-      sb.append(String.format("%s -- %s [label=\"%.3f\"]", e.getV(), e.getW(), e.getWeight()) + NEWLINE);
+      sb.append(String.format("%s -- %s [label=\"%d\"]", e.getV(), e.getW(), e.getWeight()) + NEWLINE);
     sb.append("}" + NEWLINE);
     return sb.toString();
   }
