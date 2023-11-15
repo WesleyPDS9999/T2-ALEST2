@@ -60,19 +60,19 @@ public class EdgeWeightedGraph {
   private void dfs(EdgeWeightedGraph g, String v, BigInteger d) {
   for (Edge e : g.getAdj(v)) {
     String w = e.getW();
-    String pai = e.getV();    
-    d = d.multiply(BigInteger.valueOf(e.getWeight()));
-    System.out.println(d);
-    System.out.println(w);
-    System.out.println();
+    //String pai = e.getV();    
+    BigInteger aux = d.multiply(BigInteger.valueOf(e.getWeight()));
+    //System.out.println(d);
+    //System.out.println(w);
+    //System.out.println();
     if(resultados.containsKey(w)){// se ja apresenta um valor associado com tal elemento
-      BigInteger novoValor = resultados.get(w).add(d);//soma com o valor que ja esta mapeado com o elemento
+      BigInteger novoValor = aux.add(resultados.get(w));//soma com o valor que ja esta mapeado com o elemento
       resultados.put(w,novoValor);//add no map com novo valor
     }else{
-      resultados.put(w,d);
+      resultados.put(w,aux);
     }
-    dfs(g, w, d); 
-    d = resultados.get(pai);
+    dfs(g, w, aux);
+    //d = resultados.get(pai);
     }
   }
 
